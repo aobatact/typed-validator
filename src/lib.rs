@@ -6,7 +6,7 @@ pub mod validators;
 pub struct Wrapper<T, V>(T, PhantomData<V>);
 
 pub trait Validator<T> {
-    type Error: Debug;
+    type Error: std::error::Error;
 
     fn validate(t: &T) -> Result<(), Self::Error>;
 }
