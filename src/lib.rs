@@ -1,12 +1,12 @@
-use std::{marker::PhantomData, ops::Deref, cmp::Ordering};
+use std::{cmp::Ordering, fmt::Debug, marker::PhantomData, ops::Deref};
 
-mod validators;
+pub mod validators;
 
 #[derive(Debug, Clone, Copy, Default, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Wrapper<T, V>(T, PhantomData<V>);
 
 pub trait Validator<T> {
-    type Error;
+    type Error: Debug;
 
     fn validate(t: &T) -> Result<(), Self::Error>;
 }
@@ -16,7 +16,7 @@ where
     V: Validator<T, Error = Error>,
 {
     pub fn new(t: T) -> Result<Self, Error> {
-        V::validate(&t).map(|_| Self (t, PhantomData))
+        V::validate(&t).map(|_| Self(t, PhantomData))
     }
 }
 
@@ -43,5 +43,14 @@ impl<T: PartialEq, V> PartialEq<T> for Wrapper<T, V> {
 impl<T: PartialOrd, V> PartialOrd<T> for Wrapper<T, V> {
     fn partial_cmp(&self, other: &T) -> Option<Ordering> {
         self.0.partial_cmp(other)
+    }
+}
+
+pub struct X {
+    x: i32,
+}
+impl Debug for X {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("X").field("x", &self.x).finish()
     }
 }
