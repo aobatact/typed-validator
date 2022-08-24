@@ -86,32 +86,32 @@ macro_rules! TupleValidators {
 }
 
 #[rustfmt::skip]
-TupleValidators!(TupleError2, [a:A, b:B]);
+TupleValidators!(Tuple2Error, [a:A, b:B]);
 #[rustfmt::skip]
-TupleValidators!(TupleError3, [a:A, b:B, c:C]);
+TupleValidators!(Tuple3Error, [a:A, b:B, c:C]);
 #[rustfmt::skip]
-TupleValidators!(TupleError4, [a:A, b:B, c:C, d:D]);
+TupleValidators!(Tuple4Error, [a:A, b:B, c:C, d:D]);
 #[rustfmt::skip]
-TupleValidators!(TupleError5, [a:A, b:B, c:C, d:D, e:E]);
+TupleValidators!(Tuple5Error, [a:A, b:B, c:C, d:D, e:E]);
 #[rustfmt::skip]
-TupleValidators!(TupleError6, [a:A, b:B, c:C, d:D, e:E, f:F]);
+TupleValidators!(Tuple6Error, [a:A, b:B, c:C, d:D, e:E, f:F]);
 #[rustfmt::skip]
-TupleValidators!(TupleError7, [a:A, b:B, c:C, d:D, e:E, f:F, g:G]);
+TupleValidators!(Tuple7Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G]);
 #[rustfmt::skip]
-TupleValidators!(TupleError8, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H]);
+TupleValidators!(Tuple8Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H]);
 #[rustfmt::skip]
-TupleValidators!(TupleError9, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I]);
+TupleValidators!(Tuple9Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I]);
 #[rustfmt::skip]
-TupleValidators!(TupleError10, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J]);
+TupleValidators!(Tuple10Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J]);
 #[rustfmt::skip]
-TupleValidators!(TupleError11, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K]);
+TupleValidators!(Tuple11Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K]);
 #[rustfmt::skip]
-TupleValidators!(TupleError12, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L]);
+TupleValidators!(Tuple12Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L]);
 #[rustfmt::skip]
-TupleValidators!(TupleError13, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M]);
+TupleValidators!(Tuple13Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M]);
 #[rustfmt::skip]
-TupleValidators!(TupleError14, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N]);
+TupleValidators!(Tuple14Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N]);
 #[rustfmt::skip]
-TupleValidators!(TupleError15, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O]);
+TupleValidators!(Tuple15Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O]);
 #[rustfmt::skip]
-TupleValidators!(TupleError16, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O, p:P]);
+TupleValidators!(Tuple16Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O, p:P]);
