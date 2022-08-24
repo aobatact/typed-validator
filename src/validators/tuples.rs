@@ -59,6 +59,29 @@ macro_rules! TupleValidators {
             err.finish()
         }
     }
+
+    #[allow(unused_assignments)]
+    impl<T, $($t : Validator<T>),*> std::fmt::Display for $err<T, $($t ),*>
+        where 
+        $(
+            <$t as Validator<T>>::Error: std::fmt::Display,
+        )*
+    {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.write_str("mutiple validation errors : [")?;
+            let mut first = false;
+            $(
+                if let Some(ref e) = self.$i {
+                    if first {
+                        f.write_str(", ")?;
+                        first = true;
+                    }
+                    e.fmt(f)?
+                }
+            )*
+            f.write_str("]")
+        }
+    }
 };
 }
 

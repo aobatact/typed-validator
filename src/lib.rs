@@ -45,12 +45,3 @@ impl<T: PartialOrd, V> PartialOrd<T> for Wrapper<T, V> {
         self.0.partial_cmp(other)
     }
 }
-
-pub struct X {
-    x: i32,
-}
-impl Debug for X {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("X").field("x", &self.x).finish()
-    }
-}
