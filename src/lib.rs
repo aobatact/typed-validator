@@ -20,9 +20,20 @@ where
     }
 }
 
-impl<T: AsRef<U>, U, V> AsRef<U> for Wrapper<T, V> {
-    fn as_ref(&self) -> &U {
-        self.0.as_ref()
+// impl<T, V, Error> TryFrom<T> for Wrapper<T,V>where
+
+// V: Validator<T, Error = Error>,
+// {
+//     type Error = Error;
+
+//     fn try_from(value: T) -> Result<Self, Self::Error> {
+//         todo!()
+//     }
+// }
+
+impl<T, V> AsRef<T> for Wrapper<T, V> {
+    fn as_ref(&self) -> &T {
+        &self.0
     }
 }
 

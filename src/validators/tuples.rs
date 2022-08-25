@@ -47,12 +47,10 @@ macro_rules! TupleValidators {
     #[allow(unused_assignments)]
     impl<T, $($t : Validator<T>),*> std::fmt::Debug for $err<T, $($t ),*>{
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            let mut err = f.debug_struct(stringify!($err));
-            let mut i = 0;
+            let mut err = f.debug_tuple(stringify!($err));
             $(
                 if let Some(ref e) = self.$i {
-                    err.field(&i.to_string(), &e);
-                    i += 1;
+                    err.field( &e);
                 }
             )*
 
