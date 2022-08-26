@@ -1,5 +1,5 @@
 use crate::Validator;
-use std::marker::PhantomData;
+use std::{convert::Infallible, marker::PhantomData};
 macro_rules! TupleValidators {
 ($err:ident, [$($i: ident : $t : ident),*]) => {
     impl<T, $($t),*> Validator<T> for ($($t),*)
@@ -8,18 +8,19 @@ macro_rules! TupleValidators {
         $t : Validator<T>,
     )*
     {
-        type Error = $err<T, $($t),*>;
+        type Error = Box::<$err<T, $($t),*>>;
         fn validate(v: &T) -> Result<(), Self::Error>{
-            let mut x = $err::default();
-            let mut flag = false;
+            let mut x = $err::none();
+            let mut count = 0;
             $(
                 let err = $t::validate(v);
-                flag |= err.is_err();
+                count += if err.is_err() {1} else {0};
                 x.$i = err.err();
             )*
-            if flag {
+            if count > 0 {
                 Ok(())
             }else {
+                x.count = count;
                 Err(x)
             }
         }
@@ -27,19 +28,25 @@ macro_rules! TupleValidators {
 
     pub struct $err<T, $($t : Validator<T>),*>{
         pdt : PhantomData<T>,
+        count: usize,
         $(
             pub $i : Option<<$t as Validator<T>>::Error>
         ),*
     }
 
-    impl<T, $($t : Validator<T>),*> Default for $err<T, $($t ),*>{
-        fn default() -> Self {
-            Self {
+    impl<T, $($t : Validator<T>),*> $err<T, $($t ),*>{
+        pub fn err_count(&self) -> usize {
+            self.count
+        }
+
+        fn none() -> Box<Self> {
+            Box::new(Self {
                 pdt : PhantomData::<T>,
+                count : 0,
                 $(
                     $i : Option::None,
                 )*
-            }
+            })
         }
     }
 
@@ -113,3 +120,11 @@ TupleValidators!(Tuple14Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:
 TupleValidators!(Tuple15Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O]);
 #[rustfmt::skip]
 TupleValidators!(Tuple16Error, [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O, p:P]);
+
+impl<T> Validator<T> for () {
+    type Error = Infallible;
+
+    fn validate(_t: &T) -> Result<(), Self::Error> {
+        Ok(())
+    }
+}
