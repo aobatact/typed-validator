@@ -1,16 +1,16 @@
 use crate::Validator;
 use std::convert::Infallible;
-macro_rules! TupleValidators {
-([$($i: ident : $t : ident),*]) => {
-    impl<T, $($t),*> Validator<T> for ($($t),*)
+macro_rules! TupleValidatorsInner {
+($( $t : ident),*) => {
+    impl<T0, $($t),*> Validator<T0> for ($($t),*)
     where
     $(
-        $t : Validator<T>,
-        <$t as Validator<T>>::Error : 'static,
+        $t : Validator<T0>,
+        <$t as Validator<T0>>::Error : 'static,
     )*
     {
         type Error = TupleErrors;
-        fn validate(v: &T) -> Result<(), Self::Error>{
+        fn validate(v: &T0) -> Result<(), Self::Error>{
             let mut vec = TupleErrors::new();
             $(
                 if let Err(e) = $t::validate(v) {
@@ -27,6 +27,14 @@ macro_rules! TupleValidators {
 };
 }
 
+macro_rules! TupleValidators {
+    ($t0: ident,) => {};
+    ($t0: ident,  $( $t1 : tt, )+ ) => {
+        TupleValidatorsInner!{$t0, $($t1),*}
+        TupleValidators!{$($t1,)*}
+    };
+}
+
 #[derive(Debug, Default)]
 pub struct TupleErrors(Vec<Box<dyn std::error::Error>>);
 impl std::ops::Deref for TupleErrors {
@@ -41,6 +49,7 @@ impl TupleErrors {
         Self(vec![])
     }
 
+    #[inline(never)]
     fn push_error<E: std::error::Error + 'static>(&mut self, e: E) {
         self.0.push(Box::new(e) as Box<dyn std::error::Error>);
     }
@@ -61,36 +70,7 @@ impl std::fmt::Display for TupleErrors {
 }
 impl std::error::Error for TupleErrors {}
 
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O]);
-#[rustfmt::skip]
-TupleValidators!( [a:A, b:B, c:C, d:D, e:E, f:F, g:G, h:H, i: I, j:J, k:K, l:L, m:M, n:N, o:O, p:P]);
+TupleValidators!(A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T,);
 
 impl<T> Validator<T> for () {
     type Error = Infallible;
